@@ -46,7 +46,7 @@ element = driver.find_element(
 )
 
 # determine which name to search for
-element.send_keys("teacher")
+element.send_keys("sheriff")
 element = driver.find_element(
     By.ID, "ctl00_DefaultContent_ASPxRoundPanel1_btnFindFilers"
 )
@@ -74,9 +74,10 @@ with open(txt, "a") as file:
     while Done:
         # search through all filers
         for i in range(len(css_elements)):
-            filer_tabs = WebDriverWait(driver, timeout=20).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "dxp-num"))
-            )
+            
+            # filer_tabs = WebDriverWait(driver, timeout=20).until(
+            #     EC.presence_of_element_located((By.CLASS_NAME, "dxp-num"))
+            # )
 
             img_id = str(img_id1 + str(i) + img_id2)
             
@@ -100,26 +101,28 @@ with open(txt, "a") as file:
                         (By.CSS_SELECTOR, "img.dx-vam[src*='../Images/excell.jpg']")
                     )
                 )
-                # table = driver.find_element(
-                #     By.ID, "ctl00_DefaultContent_gridFilingForms_DXMainTable"
-                # )
-                # tr_list = table.find_elements(By.TAG_NAME, "tr")
-                # for i in tr_list:
-                #     if "496" in str(i.text):
-                #         # download
-                #         excel = i.find_element(
-                #             By.CSS_SELECTOR, "img.dx-vam[src*='../Images/excell.jpg']"
-                #         ).click()
+                table = driver.find_element(
+                    By.ID, "ctl00_DefaultContent_gridFilingForms_DXMainTable"
+                )
+                tr_list = table.find_elements(By.TAG_NAME, "tr")
+                
+                for i in tr_list:
+                    file.write(filer.text + '\n')
+                    if "496" in str(i.text):
+                        # download
+                        excel = i.find_element(
+                            By.CSS_SELECTOR, "img.dx-vam[src*='../Images/excell.jpg']"
+                        ).click()
 
-                #         date = extract_date(i.text)
-                #         date = reformat_date(date)
-                #         filename = date + " 496-" + str(count) + ".xls"
-                #         count += 1
-                #         file.write(filename + "\n")
+                        date = extract_date(i.text)
+                        date = reformat_date(date)
+                        filename = date + " 496-" + str(count) + ".xls"
+                        count += 1
+                        file.write(filename + "\n")
+                        
                 
                 
-                # tempfile = open(filer.text + str(count), 'w')
-                # tempfile.close()
+        
 
 
                 # go back and repeat
